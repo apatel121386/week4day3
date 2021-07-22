@@ -50,13 +50,26 @@ GROUP BY staff.staff_id
 ORDER BY COUNT(payment_id) DESC;
 
 -- #6 What film had the most actors in it?
-SELECT *
+SELECT film.film_id, title, COUNT(*)
 FROM film_actor
-WHERE film_actor.film_id IN (
- SELECT film_id
-FROM film_actor
-GROUP BY film_id
-HAVING SUM(film_actor.actor_id);
+JOIN film
+ON film_actor.film_id = film.film_id
+GROUP BY film.film_id, title
+ORDER BY  COUNT Desc
+Limit 1;
 
 
 --# 7 Which actor has been in the least movies?
+SELECT actor.actor_id, first_name, last_name, COUNT(*)
+FROM film_actor
+JOIN actor
+ON film_actor.actor_id = actor.actor_id
+GROUP BY actor.actor_id, first_name, last_name
+ORDER BY COUNT(*)
+limit 1;
+
+-- # 8 How many districts have more than 5 customers in it?
+SELECT district, COUNT(*)
+FROM address
+GROUP BY district
+Having COUNT(*) > 5
